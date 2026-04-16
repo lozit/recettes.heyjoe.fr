@@ -1,0 +1,154 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import FeedCard from '../components/FeedCard.astro';
+import FilterBar from '../components/FilterBar.tsx';
+import { getCollection } from 'astro:content';
+
+const allRecettes = await getCollection('recettes');
+
+// Sort by date descending
+const recipes = allRecettes.sort((a, b) => {
+  const da = new Date(a.data.date.split(' ').reverse().join('-'));
+  const db = new Date(b.data.date.split(' ').reverse().join('-'));
+  return db.getTime() - da.getTime();
+});
+
+const recipeData = recipes.map(r => ({
+  slug: r.id,
+  title: r.data.title,
+  description: r.data.description,
+  date: r.data.date,
+  tags: r.data.tags,
+  photo: r.data.photo,
+}));
+---
+
+<BaseLayout title="Recettes — Hey Joe!">
+  <Nav />
+
+  <FilterBar client:load recipes={recipeData} />
+
+  <main class="feed" id="feed">
+    <p class="results-label" id="results-label">
+      {recipes.length} recette{recipes.length > 1 ? 's' : ''}
+    </p>
+
+    {recipes.map((r, i) => (
+      <div class="feed-card-wrap" data-slug={r.id} data-tags={JSON.stringify(r.data.tags.map(t => t.toLowerCase()))}>
+        <FeedCard
+          slug={r.id}
+          title={r.data.title}
+          description={r.data.description}
+          date={r.data.date}
+          tags={r.data.tags}
+          photo={r.data.photo}
+          index={i}
+        />
+      </div>
+    ))}
+
+    <p class="empty" id="empty-msg" style="display:none">
+      Aucune recette pour cette recherche.
+    </p>
+  </main>
+
+  <footer class="footer">
+    <span>&copy; {new Date().getFullYear()} Hey Joe!</span>
+    <span>{recipes.length} recettes</span>
+  </footer>
+</BaseLayout>
+
+<script>
+  window.addEventListener('filter-recipes', ((e: CustomEvent) => {
+    const { slugs, count, activeFilter, search } = e.detail;
+    const cards = document.querySelectorAll<HTMLElement>('.feed-card-wrap');
+    let visible = 0;
+
+    cards.forEach(card => {
+      const slug = card.dataset.slug || '';
+      const show = slugs.has(slug);
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+
+    const label = document.getElementById('results-label');
+    if (label) {
+      let text = `${count} recette${count > 1 ? 's' : ''}`;
+      if (activeFilter !== 'tout') text += ` · ${activeFilter}`;
+      if (search) text += ` · "${search}"`;
+      label.textContent = text;
+    }
+
+    const emptyMsg = document.getElementById('empty-msg');
+    if (emptyMsg) {
+      emptyMsg.style.display = visible === 0 ? '' : 'none';
+    }
+  }) as EventListener);
+</script>
+
+<style>
+  /* Filter bar styles (injected for the React island) */
+  :global(.nav-search-wrap) {
+    position: absolute; right: clamp(1rem, 4vw, 2rem); top: 0;
+    height: 52px; display: flex; align-items: center;
+  }
+  :global(.nav-search) {
+    background: none; border: none; border-bottom: 1px solid var(--border);
+    font-family: var(--sans); font-size: 0.82rem; color: var(--ink);
+    padding: 4px 0; width: 140px; outline: none; transition: border-color 0.2s;
+  }
+  :global(.nav-search::placeholder) { color: var(--ink-xlight); }
+  :global(.nav-search:focus) { border-color: var(--accent); }
+
+  :global(.filter-wrap) {
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 52px; z-index: 40;
+    background: rgba(250,250,247,0.93); backdrop-filter: blur(12px);
+  }
+  :global(.filter-bar) {
+    max-width: var(--col); margin: 0 auto;
+    padding: 0 clamp(1rem, 4vw, 2rem);
+    display: flex; overflow-x: auto; scrollbar-width: none;
+    opacity: 0; transition: opacity 0.4s 0.1s;
+  }
+  :global(.filter-bar.loaded) { opacity: 1; }
+  :global(.filter-bar::-webkit-scrollbar) { display: none; }
+  :global(.filter-btn) {
+    flex-shrink: 0; background: none; border: none; cursor: pointer;
+    font-family: var(--sans); font-size: 0.78rem; color: var(--ink-light);
+    padding: 0.8rem 0.9rem; white-space: nowrap;
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  :global(.filter-btn:first-child) { padding-left: 0; }
+  :global(.filter-btn:hover) { color: var(--ink); }
+  :global(.filter-btn.active) { color: var(--accent); border-color: var(--accent); font-weight: 500; }
+  :global(.filter-count) { font-size: 0.6rem; color: var(--ink-xlight); margin-left: 3px; }
+  :global(.filter-btn.active .filter-count) { color: var(--accent); opacity: 0.6; }
+
+  .feed {
+    max-width: var(--col); margin: 0 auto;
+    padding: 2rem clamp(1rem, 4vw, 2rem) 4rem;
+  }
+
+  .results-label {
+    font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-xlight); margin-bottom: 1.75rem;
+  }
+
+  .empty {
+    padding: 5rem 0; text-align: center;
+    font-family: var(--serif); font-style: italic;
+    color: var(--ink-xlight); font-size: 1.05rem;
+  }
+
+  .footer {
+    max-width: var(--col); margin: 0 auto;
+    padding: 1.5rem clamp(1rem, 4vw, 2rem);
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between;
+    font-family: var(--serif); font-style: italic;
+    font-size: 0.72rem; color: var(--ink-xlight);
+  }
+</style>

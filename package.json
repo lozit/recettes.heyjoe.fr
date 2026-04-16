@@ -1,58 +1,18 @@
 {
-  "name": "gatsby-starter-blog",
+  "name": "recettes-heyjoe",
   "private": true,
-  "description": "A starter for a blog powered by Gatsby and Markdown",
-  "version": "0.1.0",
-  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
-  "bugs": {
-    "url": "https://github.com/gatsbyjs/gatsby/issues"
+  "description": "Blog de recettes familial — Hey Joe!",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
   },
   "dependencies": {
-    "gatsby": "^2.19.17",
-    "gatsby-image": "^2.2.41",
-    "gatsby-plugin-ackee-tracker": "^1.2.0",
-    "gatsby-plugin-manifest": "^2.2.41",
-    "gatsby-plugin-netlify": "^2.1.32",
-    "gatsby-plugin-netlify-cms": "^4.1.40",
-    "gatsby-plugin-offline": "^3.0.35",
-    "gatsby-plugin-react-helmet": "^3.1.22",
-    "gatsby-plugin-remove-fingerprints": "0.0.2",
-    "gatsby-plugin-sharp": "^2.4.5",
-    "gatsby-plugin-web-font-loader": "^1.0.4",
-    "gatsby-remark-copy-linked-files": "^2.1.37",
-    "gatsby-remark-images": "^3.1.44",
-    "gatsby-source-filesystem": "^2.1.48",
-    "gatsby-transformer-remark": "^2.6.51",
-    "gatsby-transformer-sharp": "^2.3.14",
-    "netlify-cms-app": "^2.11.19",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-helmet": "^5.2.1",
-    "sharp": "^0.34.0"
-  },
-  "devDependencies": {
-    "codemirror": "^5.51.0",
-    "prettier": "^1.19.1",
-    "redux": "^3.7.2",
-    "typescript": "^3.7.5"
-  },
-  "homepage": "https://github.com/gatsbyjs/gatsby-starter-blog#readme",
-  "keywords": [
-    "gatsby"
-  ],
-  "license": "MIT",
-  "main": "n/a",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/gatsbyjs/gatsby-starter-blog.git"
-  },
-  "scripts": {
-    "build": "gatsby build",
-    "develop": "gatsby develop",
-    "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
-    "start": "npm run develop",
-    "serve": "gatsby serve",
-    "clean": "gatsby clean",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
+    "@astrojs/react": "^5.0.3",
+    "astro": "^6.1.7",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5"
   }
 }

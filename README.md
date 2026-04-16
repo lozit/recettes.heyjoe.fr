@@ -1,97 +1,96 @@
-<!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
-<p align="center">
-  <a href="https://www.gatsbyjs.org">
-    <img alt="Gatsby" src="https://www.gatsbyjs.org/monogram.svg" width="60" />
-  </a>
-</p>
-<h1 align="center">
-  Gatsby's blog starter
-</h1>
+# Recettes HeyJoe
 
-Kick off your project with this blog boilerplate. This starter ships with the main Gatsby configuration files you might need to get up and running blazing fast with the blazing fast app generator for React.
+> Le bloc-notes de recettes de la famille HeyJoe — site statique Gatsby, contenu en Markdown, édition via Netlify CMS, hébergement Netlify.
 
-_Have another more specific idea? You may want to check out our vibrant collection of [official and community-created starters](https://www.gatsbyjs.org/docs/gatsby-starters/)._
+Site en ligne : https://recettes.heyjoe.fr
 
-## 🚀 Quick start
+---
 
-1.  **Create a Gatsby site.**
+## 🇫🇷 À propos
 
-    Use the Gatsby CLI to create a new site, specifying the blog starter.
+Ce dépôt héberge un petit site de recettes familial. L'objectif est simple : garder au même endroit les recettes qu'on cuisine régulièrement à la maison, et pouvoir les consulter facilement depuis un téléphone en cuisine.
 
-    ```shell
-    # create a new Gatsby site using the blog starter
-    gatsby new my-blog-starter https://github.com/gatsbyjs/gatsby-starter-blog
-    ```
+Les recettes sont écrites en Markdown dans `content/blog/`. Chaque fichier `.md` devient une page du site. On peut aussi ajouter une recette sans toucher au code grâce à Netlify CMS (interface web accessible sur `/admin/`).
 
-1.  **Start developing.**
+## 🚀 Démarrage
 
-    Navigate into your new site’s directory and start it up.
+### Prérequis
+- **Node.js** — idéalement Node 14 (Gatsby v2 est officiellement supporté jusqu'à Node 14). Des versions plus récentes fonctionnent souvent mais peuvent casser à l'installation ; dans ce cas, utiliser `nvm use 14`.
+- **npm**
 
-    ```shell
-    cd my-blog-starter/
-    gatsby develop
-    ```
+### Installation
 
-1.  **Open the source code and start editing!**
+```bash
+npm install
+npm run develop   # http://localhost:8000
+```
 
-    Your site is now running at `http://localhost:8000`!
+### Commandes utiles
 
-    _Note: You'll also see a second link: _`http://localhost:8000/___graphql`_. This is a tool you can use to experiment with querying your data. Learn more about using this tool in the [Gatsby tutorial](https://www.gatsbyjs.org/tutorial/part-five/#introducing-graphiql)._
+| Commande | Description |
+|---|---|
+| `npm run develop` | Démarre le serveur de dev avec hot-reload |
+| `npm run build` | Build de production dans `public/` |
+| `npm run serve` | Sert le build local |
+| `npm run clean` | Vide le cache Gatsby (`.cache/` et `public/`) |
+| `npm run format` | Prettier sur les fichiers JS / JSON / MD |
 
-    Open the `my-blog-starter` directory in your code editor of choice and edit `src/pages/index.js`. Save your changes and the browser will update in real time!
+## 📝 Ajouter une recette
 
-## 🧐 What's inside?
+### Option 1 — Via Netlify CMS (recommandé)
 
-A quick look at the top-level files and directories you'll see in a Gatsby project.
+Se rendre sur `/admin/` du site déployé, se connecter avec GitHub, et créer un nouvel article dans la collection **Articles**. Le CMS commitera directement sur la branche principale.
 
-    .
-    ├── node_modules
-    ├── src
-    ├── .gitignore
-    ├── .prettierrc
-    ├── gatsby-browser.js
-    ├── gatsby-config.js
-    ├── gatsby-node.js
-    ├── gatsby-ssr.js
-    ├── LICENSE
-    ├── package-lock.json
-    ├── package.json
-    └── README.md
+### Option 2 — En local (Markdown)
 
-1.  **`/node_modules`**: This directory contains all of the modules of code that your project depends on (npm packages) are automatically installed.
+Créer un fichier `content/blog/<slug>.md` (le nom du fichier devient l'URL) avec ce frontmatter :
 
-2.  **`/src`**: This directory will contain all of the code related to what you will see on the front-end of your site (what you see in the browser) such as your site header or a page template. `src` is a convention for “source code”.
+```yaml
+---
+date: 2026-04-16T12:00:00.000Z
+title: Nom de la recette
+description: Courte description qui apparaît en liste
+tags:
+  - salé        # ou "sucré"
+  - plat        # type : plat, dessert, boisson...
+  - Inde        # origine (facultatif)
+---
+```
 
-3.  **`.gitignore`**: This file tells git which files it should not track / not maintain a version history for.
+Puis le corps de la recette :
 
-4.  **`.prettierrc`**: This is a configuration file for [Prettier](https://prettier.io/). Prettier is a tool to help keep the formatting of your code consistent.
+```markdown
+> Phrase d'intro en blockquote.
 
-5.  **`gatsby-browser.js`**: This file is where Gatsby expects to find any usage of the [Gatsby browser APIs](https://www.gatsbyjs.org/docs/browser-apis/) (if any). These allow customization/extension of default Gatsby settings affecting the browser.
+![Titre](/assets/mon-image.jpg "Titre")
 
-6.  **`gatsby-config.js`**: This is the main configuration file for a Gatsby site. This is where you can specify information about your site (metadata) like the site title and description, which Gatsby plugins you’d like to include, etc. (Check out the [config docs](https://www.gatsbyjs.org/docs/gatsby-config/) for more detail).
+### Ingrédients
 
-7.  **`gatsby-node.js`**: This file is where Gatsby expects to find any usage of the [Gatsby Node APIs](https://www.gatsbyjs.org/docs/node-apis/) (if any). These allow customization/extension of default Gatsby settings affecting pieces of the site build process.
+- ...
 
-8.  **`gatsby-ssr.js`**: This file is where Gatsby expects to find any usage of the [Gatsby server-side rendering APIs](https://www.gatsbyjs.org/docs/ssr-apis/) (if any). These allow customization of default Gatsby settings affecting server-side rendering.
+### Étapes
 
-9.  **`LICENSE`**: Gatsby is licensed under the MIT license.
+1. ...
+```
 
-10. **`package-lock.json`** (See `package.json` below, first). This is an automatically generated file based on the exact versions of your npm dependencies that were installed for your project. **(You won’t change this file directly).**
+Les photos vont dans `static/assets/` (servies à `/assets/...`).
 
-11. **`package.json`**: A manifest file for Node.js projects, which includes things like metadata (the project’s name, author, etc). This manifest is how npm knows which packages to install for your project.
+Exemple canonique : [`content/blog/aloo-palak.md`](./content/blog/aloo-palak.md).
 
-12. **`README.md`**: A text file containing useful reference information about your project.
+## 🏗️ Stack technique
 
-## 🎓 Learning Gatsby
+- **Gatsby 2** + **React 16**
+- Contenu Markdown via `gatsby-transformer-remark` / `gatsby-remark-images`
+- **Netlify CMS** pour l'édition en ligne (configuré dans `static/admin/config.yml`)
+- Déploiement **Netlify** (voir `netlify.toml`)
+- Analytics **Ackee** (production uniquement, self-hosted)
 
-Looking for more guidance? Full documentation for Gatsby lives [on the website](https://www.gatsbyjs.org/). Here are some places to start:
+Pour les détails d'architecture, voir [`CLAUDE.md`](./CLAUDE.md).
 
-- **For most developers, we recommend starting with our [in-depth tutorial for creating a site with Gatsby](https://www.gatsbyjs.org/tutorial/).** It starts with zero assumptions about your level of ability and walks through every step of the process.
+## 🇬🇧 English (short)
 
-- **To dive straight into code samples, head [to our documentation](https://www.gatsbyjs.org/docs/).** In particular, check out the _Guides_, _API Reference_, and _Advanced Tutorials_ sections in the sidebar.
+Static recipe site built with Gatsby (French content). Run `npm install && npm run develop` to start the dev server at `http://localhost:8000`. Add recipes as Markdown files in `content/blog/` (see any existing file for the frontmatter format), or use the Netlify CMS at `/admin/`. Full docs above in French; architecture notes in `CLAUDE.md`.
 
-## 💫 Deploy
+## 📄 Licence
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/gatsbyjs/gatsby-starter-blog)
-
-<!-- AUTO-GENERATED-CONTENT:END -->
+À définir.

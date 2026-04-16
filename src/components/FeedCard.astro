@@ -1,0 +1,99 @@
+---
+interface Props {
+  slug: string;
+  title: string;
+  description: string;
+  date: string;
+  tags: string[];
+  photo?: string;
+  index: number;
+}
+
+const { slug, title, description, date, tags, photo, index } = Astro.props;
+---
+
+<a href={`/recettes/${slug}/`} class="feed-card" style={`animation-delay: ${index * 60}ms`}>
+  {photo ? (
+    <div class="card-photo-wrap">
+      <img src={photo} alt={title} class="card-photo" loading="lazy" />
+    </div>
+  ) : (
+    <div class="card-no-photo">
+      <span class="no-photo-initial">{title.charAt(0)}</span>
+    </div>
+  )}
+
+  <div class="card-text">
+    <div class="card-top">
+      <h2 class="card-title">{title}</h2>
+      <span class="card-date">{date}</span>
+    </div>
+    <p class="card-desc">{description}</p>
+    <div class="card-tags">
+      {tags.slice(0, 3).map(t => (
+        <span class="tag">{t}</span>
+      ))}
+    </div>
+  </div>
+</a>
+
+<style>
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: none; }
+  }
+  .feed-card {
+    display: block; text-decoration: none; color: inherit;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2.5rem; margin-bottom: 2.5rem;
+    animation: fadeUp 0.4s ease both;
+    transition: opacity 0.2s;
+  }
+  .feed-card:last-child { border-bottom: none; }
+  .feed-card:hover { opacity: 0.82; }
+
+  .card-photo-wrap {
+    background: var(--dark);
+    margin-bottom: 1.1rem;
+    overflow: hidden;
+  }
+  .card-photo {
+    width: 100%; height: auto; display: block;
+  }
+
+  .card-no-photo {
+    background: var(--dark);
+    aspect-ratio: 4/3;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.1rem;
+  }
+  .no-photo-initial {
+    font-family: var(--serif); font-style: italic; font-weight: 200;
+    font-size: 5rem; color: rgba(255,255,255,0.06);
+    user-select: none; line-height: 1;
+  }
+
+  .card-text { display: flex; flex-direction: column; gap: 0.5rem; }
+  .card-top {
+    display: flex; align-items: baseline;
+    justify-content: space-between; gap: 1rem;
+  }
+  .card-title {
+    font-family: var(--serif); font-weight: 300;
+    font-size: clamp(1.4rem, 4vw, 1.85rem);
+    line-height: 1.1; letter-spacing: -0.015em;
+  }
+  .card-date {
+    font-family: var(--serif); font-style: italic;
+    font-size: 0.72rem; color: var(--ink-xlight);
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .card-desc {
+    font-size: 0.87rem; line-height: 1.65; color: var(--ink-light);
+  }
+  .card-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 0.25rem; }
+  .tag {
+    font-size: 0.62rem; letter-spacing: 0.09em; text-transform: uppercase;
+    padding: 2px 8px; background: var(--accent-pale); color: var(--accent); font-weight: 500;
+  }
+</style>
