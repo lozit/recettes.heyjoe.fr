@@ -1,6 +1,6 @@
 # Recettes HeyJoe
 
-> Le bloc-notes de recettes de la famille HeyJoe — site statique Gatsby, contenu en Markdown, édition via Netlify CMS, hébergement Netlify.
+> Le bloc-notes de recettes de la famille HeyJoe — site statique Astro, contenu en Markdown, hébergement Netlify.
 
 Site en ligne : https://recettes.heyjoe.fr
 
@@ -10,50 +10,40 @@ Site en ligne : https://recettes.heyjoe.fr
 
 Ce dépôt héberge un petit site de recettes familial. L'objectif est simple : garder au même endroit les recettes qu'on cuisine régulièrement à la maison, et pouvoir les consulter facilement depuis un téléphone en cuisine.
 
-Les recettes sont écrites en Markdown dans `content/blog/`. Chaque fichier `.md` devient une page du site. On peut aussi ajouter une recette sans toucher au code grâce à Netlify CMS (interface web accessible sur `/admin/`).
+Les recettes sont écrites en Markdown dans `src/content/recettes/`. Chaque fichier `.md` devient une page du site.
 
 ## 🚀 Démarrage
 
 ### Prérequis
-- **Node.js** — idéalement Node 14 (Gatsby v2 est officiellement supporté jusqu'à Node 14). Des versions plus récentes fonctionnent souvent mais peuvent casser à l'installation ; dans ce cas, utiliser `nvm use 14`.
+- **Node.js** 18+
 - **npm**
 
 ### Installation
 
 ```bash
 npm install
-npm run develop   # http://localhost:8000
+npm run dev   # http://localhost:4321
 ```
 
 ### Commandes utiles
 
 | Commande | Description |
 |---|---|
-| `npm run develop` | Démarre le serveur de dev avec hot-reload |
-| `npm run build` | Build de production dans `public/` |
-| `npm run serve` | Sert le build local |
-| `npm run clean` | Vide le cache Gatsby (`.cache/` et `public/`) |
-| `npm run format` | Prettier sur les fichiers JS / JSON / MD |
+| `npm run dev` | Démarre le serveur de dev Astro avec hot-reload |
+| `npm run build` | Build de production dans `dist/` |
+| `npm run preview` | Sert le build local |
 
 ## 📝 Ajouter une recette
 
-### Option 1 — Via Netlify CMS (recommandé)
-
-Se rendre sur `/admin/` du site déployé, se connecter avec GitHub, et créer un nouvel article dans la collection **Articles**. Le CMS commitera directement sur la branche principale.
-
-### Option 2 — En local (Markdown)
-
-Créer un fichier `content/blog/<slug>.md` (le nom du fichier devient l'URL) avec ce frontmatter :
+Créer un fichier `src/content/recettes/<slug>.md` (le nom du fichier devient l'URL `/recettes/<slug>`) avec ce frontmatter :
 
 ```yaml
 ---
-date: 2026-04-16T12:00:00.000Z
-title: Nom de la recette
-description: Courte description qui apparaît en liste
-tags:
-  - salé        # ou "sucré"
-  - plat        # type : plat, dessert, boisson...
-  - Inde        # origine (facultatif)
+title: "Nom de la recette"
+description: "Courte description qui apparaît en liste"
+date: "16 04 2026"          # format JJ MM AAAA
+tags: ["salé", "plat", "Inde"]
+photo: "/images/recettes/<slug>.jpg"
 ---
 ```
 
@@ -61,8 +51,6 @@ Puis le corps de la recette :
 
 ```markdown
 > Phrase d'intro en blockquote.
-
-![Titre](/assets/mon-image.jpg "Titre")
 
 ### Ingrédients
 
@@ -73,24 +61,22 @@ Puis le corps de la recette :
 1. ...
 ```
 
-Les photos vont dans `static/assets/` (servies à `/assets/...`).
+Les photos vont dans `public/images/recettes/` (servies à `/images/recettes/...`).
 
-Exemple canonique : [`content/blog/aloo-palak.md`](./content/blog/aloo-palak.md).
+Exemple canonique : [`src/content/recettes/aloo-palak.md`](./src/content/recettes/aloo-palak.md).
 
 ## 🏗️ Stack technique
 
-- **Gatsby 2** + **React 16**
-- Contenu Markdown via `gatsby-transformer-remark` / `gatsby-remark-images`
-- **Netlify CMS** pour l'édition en ligne (configuré dans `static/admin/config.yml`)
+- **Astro 6** + **React 19** (pour quelques îles interactives, ex. barre de filtres)
+- Contenu Markdown via **Astro Content Collections** (`src/content.config.ts`)
 - Déploiement **Netlify** (voir `netlify.toml`)
-- Analytics **Ackee** (production uniquement, self-hosted)
 
 Pour les détails d'architecture, voir [`CLAUDE.md`](./CLAUDE.md).
 
 ## 🇬🇧 English (short)
 
-Static recipe site built with Gatsby (French content). Run `npm install && npm run develop` to start the dev server at `http://localhost:8000`. Add recipes as Markdown files in `content/blog/` (see any existing file for the frontmatter format), or use the Netlify CMS at `/admin/`. Full docs above in French; architecture notes in `CLAUDE.md`.
+Static recipe site built with Astro (French content). Run `npm install && npm run dev` to start the dev server at `http://localhost:4321`. Add recipes as Markdown files in `src/content/recettes/` (see any existing file for the frontmatter format). Full docs above in French; architecture notes in `CLAUDE.md`.
 
 ## 📄 Licence
 
-À définir.
+MIT — voir [`LICENSE`](./LICENSE).
